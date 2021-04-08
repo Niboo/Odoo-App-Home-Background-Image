@@ -40,4 +40,4 @@ For support and more information, please visit `our Website <https://www.mint-sy
 
 Further information
 ===================
-HTML Description: `<static/description/index.html>`__
+HTML description: `<static/description/index.html>`__
