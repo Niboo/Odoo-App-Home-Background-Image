@@ -25,7 +25,8 @@ Clone module into Odoo addon directory.
 Configuration
 ~~~~~~~~~~~~~
 
-* No additional configurations needed
+* Open the company form and click *Edit*
+* Set a home backround image and click *Save*
 
 Maintainer
 ==========
