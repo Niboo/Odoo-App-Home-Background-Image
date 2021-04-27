@@ -1,45 +1,44 @@
 odoo.define('home_background_image.Home', function (require) {
 "use strict";
 
-var session = require('web.session');
-var HomeMenu = require('web_enterprise.HomeMenu');
+    const session = require('web.session');
+    const WebClient = require('web.WebClient');
 
-/*
- * Notice:
- *  some features (like seeing the home menu background) are available
- *  even the user is not a system user, this is why there are two different
- *  includes in Studio for this module.
- */
+    WebClient.include({
 
-HomeMenu.include({
-    /**
-     * @override
-     */
-    start: function () {
-        this._setBackgroundImage();
-        return this._super.apply(this, arguments);
-    },
+        //--------------------------------------------------------------------------
+        // Public
+        //--------------------------------------------------------------------------
 
-    //--------------------------------------------------------------------------
-    // Private
-    //--------------------------------------------------------------------------
+        /**
+         * @override
+         */
+        async load_menus() {
+            const menuData = await this._super(...arguments);
+            const company_id = session.user_context.allowed_company_ids[0];
+            const url = session.url('/web/image', {
+                id: company_id,
+                model: 'res.company',
+                field: 'background_image',
+            });
+            this.homeMenuStyle = `background-image: url(${url})`;
+            return menuData;
+        },
 
-    /**
-     * Put the home menu background as the cover of current `$el`.
-     *
-     * @private
-     */
-    _setBackgroundImage: function () {
-        var url = session.url('/web/image', {
-            model: 'res.company',
-            id: session.user_context.allowed_company_ids[0],
-            field: 'background_image',
-        });
-        this.$el.css({
-            "background-image": "url(" + url + ")",
-            "background-size": "cover",
-        });
-    },
-});
+        //--------------------------------------------------------------------------
+        // Private
+        //--------------------------------------------------------------------------
 
+        /**
+         * @override
+         * @private
+         */
+         _instanciateHomeMenuWrapper() {
+            const homeMenuManager = this._super(...arguments);
+            if (this.homeMenuStyle) {
+                homeMenuManager.state.style = this.homeMenuStyle;
+            }
+            return homeMenuManager;
+        },
+    });
 });
