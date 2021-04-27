@@ -13,7 +13,7 @@
 
     'author': "Mint System GmbH",
     'website': "https://www.mint-system.ch",
-    'category': 'Theme',
+    'category': 'Customizations',
     'version': '14.0.1.0.0',
 
     'depends': ['base'],
